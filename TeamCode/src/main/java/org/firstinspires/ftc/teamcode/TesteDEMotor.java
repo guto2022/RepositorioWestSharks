@@ -14,8 +14,10 @@ public class TesteDEMotor extends OpMode {
     public void init(){
         motorD = hardwareMap.get(DcMotor.class, "Front_right");
         motorE = hardwareMap.get(DcMotor.class, "Front_left");
+
         motorD.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorE.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         motorD.setDirection(DcMotorSimple.Direction.REVERSE);
         motorE.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -35,9 +37,6 @@ public class TesteDEMotor extends OpMode {
 
         motorD.setPower(rightSidePower);
         motorE.setPower(leftSidePower);
-
-
-
 
     }
 }
