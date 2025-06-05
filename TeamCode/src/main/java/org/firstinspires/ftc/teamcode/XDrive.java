@@ -61,7 +61,7 @@ public class XDrive extends OpMode {
         double turn = gamepad1.right_stick_x;  // gira
         double strafe = gamepad1.left_stick_x; // direita e esquerda
         double leftFrontPower, rightFrontPower, leftBackPower, rightBackPower;
-        double power = 1 - (0.5 * gamepad1.right_trigger);
+        double power = -(0.5 * gamepad1.right_trigger) + 1;
 
         leftFrontPower = Range.clip(drive - strafe - turn, -power, power);
         rightFrontPower = Range.clip(drive - strafe + turn, -power, power);

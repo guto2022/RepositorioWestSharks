@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
@@ -15,7 +14,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import java.util.concurrent.TimeUnit;
 
 @TeleOp
-public class XDriveFOD extends OpMode {
+public class FODXDrive extends OpMode {
     DcMotor motorFL;
     DcMotor motorFR;
     DcMotor motorBL;
@@ -32,7 +31,7 @@ public class XDriveFOD extends OpMode {
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
+                RevHubOrientationOnRobot.UsbFacingDirection.LEFT
         ));
         imu.initialize(parameters);
 
@@ -68,8 +67,8 @@ public class XDriveFOD extends OpMode {
         telemetry.addData("Hardware: ", "Initialized");
     }
 
-    // public void init_loop() {}
-    // public void start(){}
+    /*public void init_loop() {}
+    public void start(){}*/
 
     @Override
     public void loop(){
@@ -81,7 +80,7 @@ public class XDriveFOD extends OpMode {
 
         double max = Math.max(Math.abs(strafe) + Math.abs(drive) + Math.abs(turn), 1);
 
-        double drivePower = 1 - (0.5 * gamepad1.right_trigger);
+        double drivePower = -(0.5 * gamepad1.right_trigger) + 1;
         if(gamepad1.left_bumper) imu.resetYaw();
 
         telemetry.addLine("Angulo do robô: "+ imu.getRobotYawPitchRollAngles().getYaw());
@@ -92,9 +91,9 @@ public class XDriveFOD extends OpMode {
         double adjustedDrive = drive * Math.cos(heading) - strafe * Math.sin(heading);
 
         motorFL.setPower(((adjustedDrive + adjustedStrafe + turn) / max) * drivePower);
-        motorFR.setPower(((adjustedDrive - adjustedStrafe - turn) / max) * drivePower);
+        motorFR.setPower(((adjustedDrive + adjustedStrafe - turn) / max) * drivePower);
         motorBL.setPower(((adjustedDrive - adjustedStrafe + turn) / max) * drivePower);
-        motorBR.setPower(((adjustedDrive + adjustedStrafe - turn) / max) * drivePower);
+        motorBR.setPower(((adjustedDrive - adjustedStrafe - turn) / max) * drivePower);
         telemetry.update();
     }
 }
