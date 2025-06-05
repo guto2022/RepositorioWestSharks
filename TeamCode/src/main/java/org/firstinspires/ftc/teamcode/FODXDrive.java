@@ -48,19 +48,33 @@ public class FODXDrive extends OpMode {
         motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        coreHexL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        coreHexR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        coreHexL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        coreHexR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         motorFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        coreHexL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        coreHexR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         motorFL.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        coreHexR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        coreHexL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        coreHexR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        coreHexL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        coreHexR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        coreHexL.setTargetPosition(0);
+        coreHexR.setTargetPosition(0);
+        garra.setPosition(1);
+
+        coreHexL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        coreHexR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        coreHexL.setPower(0.2);
+        coreHexL.setPower(0.2);
 
         Deadline gamepadRateLimit = new Deadline(500, TimeUnit.MILLISECONDS);
 
@@ -73,6 +87,26 @@ public class FODXDrive extends OpMode {
     @Override
     public void loop(){
         telemetry.addData("Hardware: ", "Running");
+
+        if (gamepad2.dpad_up){
+            coreHexL.setTargetPosition(100);
+            coreHexR.setTargetPosition(100);
+        } else if (gamepad2.dpad_down) {
+            coreHexL.setTargetPosition(0);
+            coreHexR.setTargetPosition(0);
+        }
+
+        if (gamepad2.x) {
+            garra.setPosition(0);
+        } else if (gamepad2.y) {
+            garra.setPosition(1);
+        }
+
+        if (gamepad2.a) {
+            intake.setPosition(0);
+        } else if (gamepad2.b) {
+            intake.setPosition(0.35);
+        }
 
         double drive = gamepad1.left_stick_y;  // frente e atrás
         double turn = -gamepad1.right_stick_x;  // gira
