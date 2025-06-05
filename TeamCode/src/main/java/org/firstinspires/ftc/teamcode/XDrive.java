@@ -18,7 +18,8 @@ public class XDrive extends OpMode {
     Servo garra;
     Servo intake;
 
-    public void init() {
+    @Override
+    public void init(){
         motorFL = hardwareMap.get(DcMotor.class, "FL");
         motorFR = hardwareMap.get(DcMotor.class, "FR");
         motorBL = hardwareMap.get(DcMotor.class, "BL");
@@ -49,9 +50,10 @@ public class XDrive extends OpMode {
         telemetry.addData("Hardware: ", "Initialized");
     }
 
-    /*public void init_loop() {}
-    public void start(){}*/
+    // public void init_loop() {}
+    // public void start(){}
 
+    @Override
     public void loop(){
         telemetry.addData("Hardware: ", "Running");
 
@@ -59,11 +61,12 @@ public class XDrive extends OpMode {
         double turn = gamepad1.right_stick_x;  // gira
         double strafe = gamepad1.left_stick_x; // direita e esquerda
         double leftFrontPower, rightFrontPower, leftBackPower, rightBackPower;
+        double power = 1 - (0.5 * gamepad1.right_trigger);
 
-        leftFrontPower = Range.clip(drive - strafe - turn, -1, 1);
-        rightFrontPower = Range.clip(drive - strafe + turn, -1, 1);
-        leftBackPower = Range.clip(drive + strafe - turn, -1, 1);
-        rightBackPower = Range.clip(drive + strafe + turn, -1, 1);
+        leftFrontPower = Range.clip(drive - strafe - turn, -power, power);
+        rightFrontPower = Range.clip(drive - strafe + turn, -power, power);
+        leftBackPower = Range.clip(drive + strafe - turn, -power, power);
+        rightBackPower = Range.clip(drive + strafe + turn, -power, power);
 
         motorFL.setPower(leftFrontPower);
         motorFR.setPower(rightFrontPower);
