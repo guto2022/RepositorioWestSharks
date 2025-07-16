@@ -19,8 +19,8 @@ public class FODXDrive extends OpMode {
     DcMotor motorFR;
     DcMotor motorBL;
     DcMotor motorBR;
-    DcMotor coreHexL;
-    DcMotor coreHexR;
+    DcMotor motorL;
+    DcMotor motorR;
     Servo garra;
     Servo intake;
     IMU imu;
@@ -39,8 +39,8 @@ public class FODXDrive extends OpMode {
         motorFR = hardwareMap.get(DcMotor.class, "FR");
         motorBL = hardwareMap.get(DcMotor.class, "BL");
         motorBR = hardwareMap.get(DcMotor.class, "BR");
-        coreHexL = hardwareMap.get(DcMotor.class, "CHexL");
-        coreHexR = hardwareMap.get(DcMotor.class, "CHexR");
+        motorL = hardwareMap.get(DcMotor.class, "AL");
+        motorR = hardwareMap.get(DcMotor.class, "AR");
         garra = hardwareMap.get(Servo.class, "garra");
         intake = hardwareMap.get(Servo.class, "intake");
 
@@ -48,33 +48,33 @@ public class FODXDrive extends OpMode {
         motorFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        coreHexL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        coreHexR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         motorFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        coreHexL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        coreHexR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         motorFL.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
-        coreHexR.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        coreHexL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        coreHexR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        coreHexL.setTargetPosition(0);
-        coreHexR.setTargetPosition(0);
+        motorL.setTargetPosition(0);
+        motorR.setTargetPosition(0);
         garra.setPosition(1);
 
-        coreHexL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        coreHexR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        coreHexL.setPower(0.2);
-        coreHexL.setPower(0.2);
+        motorL.setPower(0.2);
+        motorR.setPower(0.2);
 
         Deadline gamepadRateLimit = new Deadline(500, TimeUnit.MILLISECONDS);
 
@@ -89,11 +89,11 @@ public class FODXDrive extends OpMode {
         telemetry.addData("Hardware: ", "Running");
 
         if (gamepad2.dpad_up){
-            coreHexL.setTargetPosition(100);
-            coreHexR.setTargetPosition(100);
+            motorL.setTargetPosition(100);
+            motorR.setTargetPosition(100);
         } else if (gamepad2.dpad_down) {
-            coreHexL.setTargetPosition(0);
-            coreHexR.setTargetPosition(0);
+            motorL.setTargetPosition(0);
+            motorR.setTargetPosition(0);
         }
 
         if (gamepad2.x) {
